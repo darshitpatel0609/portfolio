@@ -8,6 +8,13 @@ const COMPANY_LOGO_ASSETS: Record<
   string,
   { src: string; alt: string; wrapperClass: string; imgClass: string }
 > = {
+  promethean: {
+    src: '/assets/aistudio/image_debe2ad5.png',
+    alt: 'PrometheanTechAI logo',
+    wrapperClass:
+      'h-7 w-7 overflow-hidden rounded-md border border-slate-200/90 bg-white p-0.5 dark:border-slate-700/80',
+    imgClass: 'h-full w-full object-contain',
+  },
   omniism: {
     src: '/assets/aistudio/image_dd995df8.png',
     alt: 'OmniISM Technologies logo',
