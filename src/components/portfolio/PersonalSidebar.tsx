@@ -1,14 +1,11 @@
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import {
   Briefcase,
   Code2,
   GraduationCap,
   Mail,
   MapPin,
-  Moon,
-  Sun,
 } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
 import { PROFILE } from '../../data/portfolioData';
 
 export type PortfolioSectionId =
@@ -31,8 +28,6 @@ const SECTIONS: { id: PortfolioSectionId; label: string }[] = [
 const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export function PersonalSidebar({ activeSection }: PersonalSidebarProps) {
-  const { resolvedTheme, toggleTheme } = useTheme();
-
   return (
     <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[44%] lg:flex-col lg:justify-between lg:py-20">
       <div>
@@ -98,8 +93,8 @@ export function PersonalSidebar({ activeSection }: PersonalSidebarProps) {
         </nav>
       </div>
 
-      {/* Bottom Profile Metadata List & Theme Switch */}
-      <div className="mt-8 flex items-end justify-between gap-4 border-t border-slate-200/80 pt-6 lg:mt-8 dark:border-slate-800/80">
+      {/* Bottom Profile Metadata List */}
+      <div className="mt-8 border-t border-slate-200/80 pt-6 lg:mt-8 dark:border-slate-800/80">
         <ul className="min-w-0 space-y-2.5 font-mono text-[13px] text-slate-700 dark:text-slate-300">
           <li className="flex items-center gap-3">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-slate-200/80 bg-slate-100/90 text-slate-500 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-400">
@@ -157,44 +152,6 @@ export function PersonalSidebar({ activeSection }: PersonalSidebarProps) {
             </span>
           </li>
         </ul>
-
-        <button
-          type="button"
-          onClick={toggleTheme}
-          aria-label={
-            resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-          }
-          title={
-            resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-          }
-          className="inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-slate-200/90 bg-white text-slate-900 shadow-2xs transition-colors duration-150 hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-100 dark:hover:border-slate-700 dark:hover:bg-slate-800"
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            {resolvedTheme === 'dark' ? (
-              <motion.span
-                key="sun"
-                initial={{ opacity: 0, rotate: -45, scale: 0.8 }}
-                animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                exit={{ opacity: 0, rotate: 45, scale: 0.8 }}
-                transition={{ duration: 0.16, ease: EASE_OUT_EXPO }}
-                className="flex items-center justify-center"
-              >
-                <Sun className="h-4 w-4" />
-              </motion.span>
-            ) : (
-              <motion.span
-                key="moon"
-                initial={{ opacity: 0, rotate: 45, scale: 0.8 }}
-                animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                exit={{ opacity: 0, rotate: -45, scale: 0.8 }}
-                transition={{ duration: 0.16, ease: EASE_OUT_EXPO }}
-                className="flex items-center justify-center"
-              >
-                <Moon className="h-4 w-4" />
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </button>
       </div>
     </header>
   );
