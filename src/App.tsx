@@ -4,7 +4,13 @@
  */
 
 import { useEffect, useState } from 'react';
-import { AnimatePresence, MotionConfig, motion } from 'motion/react';
+import {
+  AnimatePresence,
+  MotionConfig,
+  motion,
+  useScroll,
+  useSpring,
+} from 'motion/react';
 import { Moon, Sun } from 'lucide-react';
 import { CaseStudyModal } from './components/portfolio/CaseStudyModal';
 import { PersonalContent } from './components/portfolio/PersonalContent';
@@ -30,6 +36,13 @@ function PortfolioApp() {
   const { resolvedTheme, toggleTheme } = useTheme();
   const [activeSection, setActiveSection] = useState<PortfolioSectionId>('about');
   const [activeCaseStudy, setActiveCaseStudy] = useState<CaseStudy | null>(null);
+
+  const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 220,
+    damping: 32,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
     const elements = SECTION_IDS.map((id) => document.getElementById(id)).filter(
@@ -57,12 +70,24 @@ function PortfolioApp() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#FAFAFA] text-slate-800 dark:bg-[#0B1120] dark:text-slate-300">
+    <div className="relative min-h-screen bg-[#FAFAFA] text-slate-800 transition-colors duration-300 dark:bg-[#0B1120] dark:text-slate-300">
+      {/* Spring-smoothed reading progress bar */}
+      <motion.div
+        aria-hidden="true"
+        style={{ scaleX: smoothProgress }}
+        className="pointer-events-none fixed inset-x-0 top-0 z-50 h-[2px] origin-left bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400"
+      />
+
       <SpotlightCanvas />
 
-      <button
+      <motion.button
         type="button"
         onClick={toggleTheme}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.92 }}
+        transition={{ duration: 0.22, ease: EASE_OUT_EXPO }}
         aria-label={
           resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
         }
@@ -75,10 +100,10 @@ function PortfolioApp() {
           {resolvedTheme === 'dark' ? (
             <motion.span
               key="sun"
-              initial={{ opacity: 0, rotate: -45, scale: 0.8 }}
+              initial={{ opacity: 0, rotate: -60, scale: 0.7 }}
               animate={{ opacity: 1, rotate: 0, scale: 1 }}
-              exit={{ opacity: 0, rotate: 45, scale: 0.8 }}
-              transition={{ duration: 0.16, ease: EASE_OUT_EXPO }}
+              exit={{ opacity: 0, rotate: 60, scale: 0.7 }}
+              transition={{ duration: 0.18, ease: EASE_OUT_EXPO }}
               className="flex items-center justify-center"
             >
               <Sun className="h-4 w-4" />
@@ -86,23 +111,28 @@ function PortfolioApp() {
           ) : (
             <motion.span
               key="moon"
-              initial={{ opacity: 0, rotate: 45, scale: 0.8 }}
+              initial={{ opacity: 0, rotate: 60, scale: 0.7 }}
               animate={{ opacity: 1, rotate: 0, scale: 1 }}
-              exit={{ opacity: 0, rotate: -45, scale: 0.8 }}
-              transition={{ duration: 0.16, ease: EASE_OUT_EXPO }}
+              exit={{ opacity: 0, rotate: -60, scale: 0.7 }}
+              transition={{ duration: 0.18, ease: EASE_OUT_EXPO }}
               className="flex items-center justify-center"
             >
               <Moon className="h-4 w-4" />
             </motion.span>
           )}
         </AnimatePresence>
-      </button>
+      </motion.button>
 
-      <div className="relative z-20 mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-16 lg:flex lg:justify-between lg:gap-12 lg:px-16 lg:py-0">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
+        className="relative z-20 mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-16 lg:flex lg:justify-between lg:gap-12 lg:px-16 lg:py-0"
+      >
         <PersonalSidebar activeSection={activeSection} />
 
         <PersonalContent onSelectCaseStudy={setActiveCaseStudy} />
-      </div>
+      </motion.div>
 
       <CaseStudyModal
         study={activeCaseStudy}

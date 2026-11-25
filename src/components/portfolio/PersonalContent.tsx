@@ -154,9 +154,13 @@ export function PersonalContent({
       </motion.section>
 
       {/* 2. EXPERIENCE — Minimalist Vertical Timeline with Company Logos */}
-      <section
+      <motion.section
         id="experience"
         aria-label="Work experience"
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.45, ease: EASE_OUT_EXPO }}
         className="mb-20 scroll-mt-20 lg:mb-28"
       >
         <div className="sticky top-0 z-20 -mx-6 mb-6 border-b border-slate-200/80 bg-[#FAFAFA]/90 px-6 py-4 backdrop-blur-md lg:static lg:mx-0 lg:bg-transparent lg:px-0 lg:pt-0 lg:pb-3.5 dark:border-slate-800/80 dark:bg-[#0B1120]/90 dark:lg:bg-transparent">
@@ -170,8 +174,16 @@ export function PersonalContent({
             const isExpanded = expandedRoles.includes(role.id);
 
             return (
-              <li
+              <motion.li
                 key={role.id}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: 0.38,
+                  delay: roleIdx * 0.06,
+                  ease: EASE_OUT_EXPO,
+                }}
                 className={roleIdx === 0 ? 'pb-8' : 'py-8'}
               >
                 {/* Company Header Row */}
@@ -233,58 +245,64 @@ export function PersonalContent({
                     <AnimatePresence initial={false}>
                       {isExpanded && (
                         <motion.div
-                          initial={{ opacity: 0, y: -4 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -4 }}
-                          transition={{ duration: 0.2, ease: EASE_OUT_EXPO }}
-                          className="mt-4 space-y-6"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.32, ease: EASE_OUT_EXPO }}
+                          className="overflow-hidden"
                         >
-                          {role.projects.map((project) => (
-                            <div key={project.name} className="space-y-2.5">
-                              <div>
-                                <p className="font-display text-sm font-semibold text-slate-800 dark:text-slate-200">
-                                  {project.name}
-                                </p>
-                                <p className="mt-0.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                                  {project.tagline}
+                          <div className="space-y-6 pt-4">
+                            {role.projects.map((project) => (
+                              <div key={project.name} className="space-y-2.5">
+                                <div>
+                                  <p className="font-display text-sm font-semibold text-slate-800 dark:text-slate-200">
+                                    {project.name}
+                                  </p>
+                                  <p className="mt-0.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                                    {project.tagline}
+                                  </p>
+                                </div>
+
+                                <ul className="space-y-2">
+                                  {project.bullets.map((bullet, idx) => (
+                                    <li
+                                      key={idx}
+                                      className="flex items-start gap-3 text-[14px] leading-relaxed text-slate-700 dark:text-slate-300"
+                                    >
+                                      <span
+                                        aria-hidden="true"
+                                        className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-slate-300 dark:bg-slate-600"
+                                      />
+                                      <span>{bullet}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+
+                                <p className="pt-1 font-mono text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+                                  {project.environment.join(' · ')}
                                 </p>
                               </div>
-
-                              <ul className="space-y-2">
-                                {project.bullets.map((bullet, idx) => (
-                                  <li
-                                    key={idx}
-                                    className="flex items-start gap-3 text-[14px] leading-relaxed text-slate-700 dark:text-slate-300"
-                                  >
-                                    <span
-                                      aria-hidden="true"
-                                      className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-slate-300 dark:bg-slate-600"
-                                    />
-                                    <span>{bullet}</span>
-                                  </li>
-                                ))}
-                              </ul>
-
-                              <p className="pt-1 font-mono text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
-                                {project.environment.join(' · ')}
-                              </p>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
                 </div>
-              </li>
+              </motion.li>
             );
           })}
         </ol>
-      </section>
+      </motion.section>
 
       {/* 3. PROJECTS — Personal Engineering Showcase with Thumbnails & Case Study Drawer */}
-      <section
+      <motion.section
         id="projects"
         aria-label="Selected projects"
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.45, ease: EASE_OUT_EXPO }}
         className="mb-20 scroll-mt-20 lg:mb-28"
       >
         <div className="sticky top-0 z-20 -mx-6 mb-6 border-b border-slate-200/80 bg-[#FAFAFA]/90 px-6 py-4 backdrop-blur-md lg:static lg:mx-0 lg:bg-transparent lg:px-0 lg:pt-0 lg:pb-3.5 dark:border-slate-800/80 dark:bg-[#0B1120]/90 dark:lg:bg-transparent">
@@ -294,14 +312,25 @@ export function PersonalContent({
         </div>
 
         <ul className="group/list space-y-6">
-          {CASE_STUDIES.map((study) => (
-            <li
+          {CASE_STUDIES.map((study, studyIdx) => (
+            <motion.li
               key={study.id}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{
+                duration: 0.4,
+                delay: studyIdx * 0.055,
+                ease: EASE_OUT_EXPO,
+              }}
               className="transition-opacity duration-200 lg:group-hover/list:opacity-50 lg:hover:!opacity-100"
             >
-              <article
+              <motion.article
                 role="button"
                 tabIndex={0}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.992 }}
+                transition={{ duration: 0.18, ease: EASE_OUT_EXPO }}
                 onClick={() => onSelectCaseStudy(study)}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter' || event.key === ' ') {
@@ -309,7 +338,7 @@ export function PersonalContent({
                     onSelectCaseStudy(study);
                   }
                 }}
-                className="group relative -mx-5 grid cursor-pointer grid-cols-1 gap-4 rounded-xl border border-transparent p-5 transition-all duration-200 hover:border-slate-200/90 hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-sky-500 sm:grid-cols-8 sm:gap-6 dark:hover:border-slate-800 dark:hover:bg-slate-800/35"
+                className="group relative -mx-5 grid cursor-pointer grid-cols-1 gap-4 rounded-xl border border-transparent p-5 transition-colors duration-200 hover:border-slate-200/90 hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-sky-500 sm:grid-cols-8 sm:gap-6 dark:hover:border-slate-800 dark:hover:bg-slate-800/35"
               >
                 {/* Left Thumbnail */}
                 <div className="sm:col-span-3 sm:pt-1">
@@ -345,16 +374,20 @@ export function PersonalContent({
                     {study.stack.slice(0, 6).join(' · ')}
                   </p>
                 </div>
-              </article>
-            </li>
+              </motion.article>
+            </motion.li>
           ))}
         </ul>
-      </section>
+      </motion.section>
 
       {/* 4. SKILLS & EDUCATION */}
-      <section
+      <motion.section
         id="skills"
         aria-label="Skills and education"
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.45, ease: EASE_OUT_EXPO }}
         className="mb-8 scroll-mt-20 lg:mb-0"
       >
         <div className="sticky top-0 z-20 -mx-6 mb-6 border-b border-slate-200/80 bg-[#FAFAFA]/90 px-6 py-4 backdrop-blur-md lg:static lg:mx-0 lg:bg-transparent lg:px-0 lg:pt-0 lg:pb-3.5 dark:border-slate-800/80 dark:bg-[#0B1120]/90 dark:lg:bg-transparent">
@@ -397,19 +430,26 @@ export function PersonalContent({
         </div>
 
         <div className="divide-y divide-slate-200/80 border-y border-slate-200/80 dark:divide-slate-800/80 dark:border-slate-800/80">
-          {filteredSkills.map((group) => (
-            <div
-              key={group.id}
-              className="grid grid-cols-1 gap-2 py-4 sm:grid-cols-12 sm:items-baseline sm:gap-6"
-            >
-              <h3 className="font-display text-sm font-semibold text-slate-900 sm:col-span-4 dark:text-slate-100">
-                {group.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-slate-600 sm:col-span-8 dark:text-slate-400">
-                {group.items.join(' · ')}
-              </p>
-            </div>
-          ))}
+          <AnimatePresence mode="popLayout" initial={false}>
+            {filteredSkills.map((group) => (
+              <motion.div
+                key={group.id}
+                layout
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.22, ease: EASE_OUT_EXPO }}
+                className="grid grid-cols-1 gap-2 py-4 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+              >
+                <h3 className="font-display text-sm font-semibold text-slate-900 sm:col-span-4 dark:text-slate-100">
+                  {group.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-slate-600 sm:col-span-8 dark:text-slate-400">
+                  {group.items.join(' · ')}
+                </p>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
         {/* Education & Languages */}
@@ -441,7 +481,7 @@ export function PersonalContent({
             </p>
           </div>
         </div>
-      </section>
+      </motion.section>
     </main>
   );
 }
