@@ -1,0 +1,6 @@
+{
+  "name": "ViteBase",
+  "description": "A clean, modular Vite, React, TypeScript, and Tailwind CSS application starter with theme management, routing, and reusable UI primitives.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
